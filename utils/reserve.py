@@ -27,7 +27,7 @@ class reserve:
             "https://passport2.chaoxing.com/mlogin?loginType=1&newversion=true&fid="
         )
         self.url = (
-            "https://office.chaoxing.com/front/third/apps/seat/code?id={}&seatNum={}"
+            "https://office.chaoxing.com/front/third/apps/seatengine/select?id={}&day={}&seatId={}&fidEnc=3c259958eb5103a7"
         )
         self.submit_url = "https://office.chaoxing.com/data/apps/seat/submit"
         self.seat_url = "https://office.chaoxing.com/data/apps/seat/getusedtimes"
@@ -163,7 +163,7 @@ class reserve:
         url = "https://captcha.chaoxing.com/captcha/get/verification/image"
         timestamp = int(time.time() * 1000)
         capture_key, token = generate_captcha_key(timestamp)
-        referer = f"https://office.chaoxing.com/front/third/apps/seat/code?id=3993&seatNum=0199"
+        referer = f"https://office.chaoxing.com/front/third/apps/seatengine/select?id=11229&seatId=073&fidEnc=3c259958eb5103a7"
         params = {
             "callback": f"jQuery33107685004390294206_1716461324846",
             "captchaId": "42sxgHoTPTKbt0uZxPJ7ssOvtXr3ZgZ1",
@@ -232,11 +232,16 @@ class reserve:
         return tl[0]
 
     def submit(self, times, roomid, seatid, action):
+        # pre-compute day for URL
+        delta_day = 1 if self.reserve_next_day else 0
+        day = datetime.date.today() + datetime.timedelta(days=0 + delta_day)
+        if action:
+            day = datetime.date.today() + datetime.timedelta(days=1 + delta_day)
         for seat in seatid:
             suc = False
             while ~suc and self.max_attempt > 0:
                 token, value = self._get_page_token(
-                    self.url.format(roomid, seat), require_value=True
+                    self.url.format(roomid, str(day), seat), require_value=False
                 )
                 logging.info(f"Get token: {token}")
                 captcha = self.resolve_captcha() if self.enable_slider else ""
@@ -276,12 +281,15 @@ class reserve:
             "seatNum": seatid,
             "captcha": captcha,
             "token": token,
+            "fidEnc": "3c259958eb5103a7",
             "type": "1",
-            "verifyData": "1",
         }
         logging.info(f"submit parameter {parm} ")
         # parm["enc"] = enc(parm)
-        parm["enc"] = verify_param(parm, value)
+        # parm["enc"] = verify_param(parm, value)
+        parm["enc"] = enc(parm)
+        if not token:
+            parm.pop("token", None)
         html = self.requests.post(url=url, params=parm, verify=True).content.decode(
             "utf-8"
         )
