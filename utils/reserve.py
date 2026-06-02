@@ -244,7 +244,7 @@ class reserve:
                     self.url.format(roomid, str(day), seat), require_value=False
                 )
                 logging.info(f"Get token: {token}")
-                captcha = self.resolve_captcha() if self.enable_slider else ""
+                captcha = "" # captcha not needed for seatengine
                 logging.info(f"Captcha token {captcha}")
                 suc = self.get_submit(
                     self.submit_url,
@@ -280,7 +280,7 @@ class reserve:
             "day": str(day),
             "seatNum": seatid,
             "captcha": captcha,
-            "wyToken": token,
+            "wyToken": "",
             "wfwEngineEnc": "",
         }
         logging.info(f"submit parameter {parm} ")
