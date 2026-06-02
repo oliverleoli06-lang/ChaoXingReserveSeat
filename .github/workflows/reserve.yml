@@ -4,6 +4,15 @@ on:
   schedule:
     - cron: "59 3 * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: '运行模式'
+        required: true
+        type: choice
+        default: 'reserve'
+        options:
+          - reserve
+          - debug
 
 jobs:
   build:
@@ -26,4 +35,4 @@ jobs:
           USERNAMES: ${{ secrets.USERNAMES }}
           PASSWORDS: ${{ secrets.PASSWORDS }}
         run: |
-          python main.py -m reserve --action
+          python main.py -m ${{ github.event.inputs.mode || 'reserve' }} --action
