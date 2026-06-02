@@ -73,7 +73,7 @@ class reserve:
     # login and page token
     def _get_page_token(self, url, require_value=False):
         response = self.requests.get(url=url, verify=False)
-        html = response.content.decode("utf-8"); logging.info(f"PAGE HTML (first 2000 chars): {html[:2000]}")
+        html = response.content.decode("utf-8"); logging.info(f"PAGE HTML (first 2000 chars): {html[:5000]}")
         # matches = re.findall(r"token = \'(.*?)\'", html)
         matches = re.findall(r'id="submit_enc"\s+value="(.*?)"', html)
         value_matches = None
