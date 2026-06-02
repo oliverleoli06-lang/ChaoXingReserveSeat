@@ -29,7 +29,7 @@ class reserve:
         self.url = (
             "https://office.chaoxing.com/front/third/apps/seatengine/select?id={}&day={}&seatId={}&fidEnc=3c259958eb5103a7"
         )
-        self.submit_url = "https://office.chaoxing.com/data/apps/seatengine/submit"
+        self.submit_url = "https://office.chaoxing.com/data/apps/seat/submit"
         self.seat_url = "https://office.chaoxing.com/data/apps/seat/getusedtimes"
         self.login_url = "https://passport2.chaoxing.com/fanyalogin"
         self.token = ""
