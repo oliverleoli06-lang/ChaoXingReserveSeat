@@ -27,10 +27,10 @@ class reserve:
             "https://passport2.chaoxing.com/mlogin?loginType=1&newversion=true&fid="
         )
         self.url = (
-            "https://office.chaoxing.com/front/third/apps/seatengine/code?id={}&seatNum={}"
+            "https://office.chaoxing.com/front/third/apps/seat/code?id={}&seatNum={}"
         )
-        self.submit_url = "https://office.chaoxing.com/data/apps/seatengine/submit"
-        self.seat_url = "https://office.chaoxing.com/data/apps/seatengine/getusedtimes"
+        self.submit_url = "https://office.chaoxing.com/data/apps/seat/submit"
+        self.seat_url = "https://office.chaoxing.com/data/apps/seat/getusedtimes"
         self.login_url = "https://passport2.chaoxing.com/fanyalogin"
         self.token = ""
         self.success_times = 0
@@ -98,7 +98,7 @@ class reserve:
             "fid": -1,
             "uname": username,
             "password": password,
-            "refer": "http%3A%2F%2Foffice.chaoxing.com%2Ffront%2Fthird%2Fapps%2Fseatengine%2Fcode%3Fid%3D4219%26seatNum%3D380",
+            "refer": "http%3A%2F%2Foffice.chaoxing.com%2Ffront%2Fthird%2Fapps%2Fseat%2Fcode%3Fid%3D4219%26seatNum%3D380",
             "t": True,
         }
         jsons = self.requests.post(url=self.login_url, params=parm, verify=False)
@@ -163,7 +163,7 @@ class reserve:
         url = "https://captcha.chaoxing.com/captcha/get/verification/image"
         timestamp = int(time.time() * 1000)
         capture_key, token = generate_captcha_key(timestamp)
-        referer = f"https://office.chaoxing.com/front/third/apps/seatengine/code?id=3993&seatNum=0199"
+        referer = f"https://office.chaoxing.com/front/third/apps/seat/code?id=3993&seatNum=0199"
         params = {
             "callback": f"jQuery33107685004390294206_1716461324846",
             "captchaId": "42sxgHoTPTKbt0uZxPJ7ssOvtXr3ZgZ1",
