@@ -29,7 +29,7 @@ class reserve:
         self.url = (
             "https://office.chaoxing.com/front/third/apps/seatengine/select?id={}&day={}&seatId={}&fidEnc=3c259958eb5103a7"
         )
-        self.submit_url = "https://office.chaoxing.com/data/apps/seat/submit"
+        self.submit_url = "https://office.chaoxing.com/data/apps/seatengine/submit"
         self.seat_url = "https://office.chaoxing.com/data/apps/seat/getusedtimes"
         self.login_url = "https://passport2.chaoxing.com/fanyalogin"
         self.token = ""
@@ -241,7 +241,7 @@ class reserve:
             suc = False
             while ~suc and self.max_attempt > 0:
                 token, value = self._get_page_token(
-                    self.url.format(roomid, str(day), seat), require_value=False
+                    self.url.format(roomid, str(day), seat), require_value=True
                 )
                 logging.info(f"Get token: {token}")
                 captcha = "" # captcha not needed for seatengine
@@ -284,8 +284,8 @@ class reserve:
             "wfwEngineEnc": "",
         }
         logging.info(f"submit parameter {parm} ")
-        # parm["enc"] = enc(parm)
-        parm["enc"] = enc(parm)
+        # parm["enc"] = verify_param(parm, value)
+        parm["enc"] = verify_param(parm, value)
         if not token:
             parm.pop("token", None)
         html = self.requests.post(url=url, params=parm, verify=True).content.decode(
