@@ -241,7 +241,7 @@ class reserve:
             suc = False
             while ~suc and self.max_attempt > 0:
                 token, value = self._get_page_token(
-                    self.url.format(roomid, str(day), seat), require_value=False
+                    self.url.format(roomid, str(day), seat), require_value=True
                 )
                 logging.info(f"Get token: {token}")
                 captcha = self.resolve_captcha() if self.enable_slider else ""
@@ -287,8 +287,7 @@ class reserve:
         }
         logging.info(f"submit parameter {parm} ")
         # parm["enc"] = enc(parm)
-        # parm["enc"] = verify_param(parm, value)
-        parm["enc"] = enc(parm)
+        parm["enc"] = verify_param(parm, value)
         if not token:
             parm.pop("token", None)
         html = self.requests.post(url=url, params=parm, verify=True).content.decode(
